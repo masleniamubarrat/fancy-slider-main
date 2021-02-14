@@ -6,12 +6,7 @@ const sliderBtn = document.getElementById('create-slider');
 const sliderContainer = document.getElementById('sliders');
 // selected image 
 let sliders = [];
-let state = true;
 
-
-// If this key doesn't work
-// Find the name in the url and go to their website
-// to create your own api key
 const KEY = '15674931-a9d714b6e9d654524df198e00&q';
 
 // show images 
@@ -32,21 +27,20 @@ const showImages = (images) => {
 const getImages = (query) => {
   fetch(`https://pixabay.com/api/?key=${KEY}=${query}&image_type=photo&pretty=true`)
     .then(response => response.json())
-    .then(data => showImages(data.hits))
+    .then(data => showImages(data.hitS))
     .catch(err => console.log(err))
 }
 
 let slideIndex = 0;
 const selectItem = (event, img) => {
   let element = event.target;
-  element.classList.toggle('added');
- 
+  element.classList.add('added');
+
   let item = sliders.indexOf(img);
   if (item === -1) {
     sliders.push(img);
   } else {
     alert('Hey, Already added !')
-    
   }
 }
 var timer
@@ -55,32 +49,28 @@ const createSlider = () => {
   if (sliders.length < 2) {
     alert('Select at least 2 image.')
     return;
-  } 
-  
+  }
   // crate slider previous next area
   sliderContainer.innerHTML = '';
   const prevNext = document.createElement('div');
   prevNext.className = "prev-next d-flex w-100 justify-content-between align-items-center";
   prevNext.innerHTML = ` 
-  <span class="prev" onclick="changeItem(-1)"><i class="fas fa-chevron-left"></i></span>
-  <span class="next" onclick="changeItem(1)"><i class="fas fa-chevron-right"></i></span>
+    <span class="prev" onclick="changeItem(-1)"><i class="fas fa-chevron-left"></i></span>
+    <span class="next" onclick="changeItem(1)"><i class="fas fa-chevron-right"></i></span>
   `;
 
   sliderContainer.appendChild(prevNext)
   document.querySelector('.main').style.display = 'block';
   // hide image aria
   imagesArea.style.display = 'none';
-  let duration = document.getElementById('duration').value || 1000;
-  if(duration<=100){
-    duration = 500;
-  }
-
+  const duration = document.getElementById('duration').value || 1000;
   sliders.forEach(slide => {
     let item = document.createElement('div')
     item.className = "slider-item";
     item.innerHTML = `<img class="w-100"
-    src="${slide}"
-    alt="">`;
+      src="${slide}"
+      alt="">
+    `;
     sliderContainer.appendChild(item)
   })
   changeSlide(0)
@@ -102,7 +92,7 @@ const changeSlide = (index) => {
   if (index < 0) {
     slideIndex = items.length - 1
     index = slideIndex;
-  }
+  };
 
   if (index >= items.length) {
     index = 0;
@@ -127,9 +117,3 @@ searchBtn.addEventListener('click', function () {
 sliderBtn.addEventListener('click', function () {
   createSlider()
 })
-document.getElementById("search")
-  .addEventListener("keypress", function (event) {
-    if (event.key === 'Enter') {
-      document.getElementById("search-btn").click();
-    }
-  });
